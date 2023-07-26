@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { User } from './_models/user';
+import { AccountService } from './_services/account.service';
 
 @Component({
   selector: 'app-root',
@@ -7,20 +8,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Dating App';
-  // userVar: string = "strnig"; //normal type to define a variable
-  users: any;
+  title = 'Dating app';
 
-
-  constructor (private http : HttpClient) { }
+  constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
-    // throw new Error('Method not implemented.');
-    this.http.get('https://localhost:5001/api/users').subscribe({
-      next: responce => this.users = responce,
-      error: error => console.log("Error is : ",error),
-      complete: () => console.log("Request has completed : ",this.users)
-    })
+    this.setCurrentUser();
   }
+
+  setCurrentUser() {
+    const userString = localStorage.getItem('user');
+    if (!userString) return;
+    const user: User = JSON.parse(userString);
+    this.accountService.setCurrentUser(user);
+  }
+
 
 }

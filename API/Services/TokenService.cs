@@ -17,12 +17,11 @@ namespace API.Services
 
         public string CreateToken(AppUser user)
         {
-            // throw new NotImplementedException();
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
             };
-            
+
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -36,8 +35,7 @@ namespace API.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token
-            );
+            return tokenHandler.WriteToken(token);
         }
     }
 }
